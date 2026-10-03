@@ -1,0 +1,300 @@
+﻿<Window x:Class="KlayFix.Desktop.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:KlayFix.Desktop.ViewModels"
+        xmlns:pages="clr-namespace:KlayFix.Desktop.Views.Pages"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:KlayFix.Desktop.Controls"
+        xmlns:services="clr-namespace:KlayFix.Desktop.Services"
+        mc:Ignorable="d"
+        Title="{Binding [Window_Title], Source={x:Static services:LanguageService.Instance}}"
+        Height="850" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        FlowDirection="{Binding FlowDirection, Source={x:Static services:LanguageService.Instance}}"
+        Background="{StaticResource BackgroundBrush}"
+        FontFamily="Segoe UI"
+        TextElement.FontSize="14"
+        TextElement.Foreground="{StaticResource TextPrimaryBrush}">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+            <pages:DashboardPage/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProductsViewModel}">
+            <pages:ProductsPage/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SalesViewModel}">
+            <pages:SalesPage/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RepairsViewModel}">
+            <pages:RepairsPage/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ExpensesViewModel}">
+            <pages:ExpensesPage/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReportsViewModel}">
+            <pages:ReportsPage/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:BackupViewModel}">
+            <pages:BackupPage/>
+        </DataTemplate>
+
+        <Storyboard x:Key="PageFadeIn">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="0" To="1" Duration="0:0:0.25">
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase Power="2"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Width="240" Background="{StaticResource SidebarBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Logo -->
+                <Border Grid.Row="0" BorderBrush="#1F2937" BorderThickness="0 0 0 1">
+                    <Grid Margin="20 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Width="36" Height="36"
+                               Source="/Assets/logo.png"
+                               Stretch="Uniform"/>
+                        <StackPanel Grid.Column="1" Margin="12 0 0 0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding [Sidebar_Title], Source={x:Static services:LanguageService.Instance}}"
+                                       FontSize="16" FontWeight="Bold"
+                                       Foreground="#FFFFFF"/>
+                            <TextBlock Text="{Binding [Sidebar_Subtitle], Source={x:Static services:LanguageService.Instance}}"
+                                       FontSize="11"
+                                       Foreground="#6B7280" Margin="0 2 0 0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Nav Items -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0 8 0 0">
+                    <StackPanel>
+                        <RadioButton Style="{StaticResource SidebarNavItemStyle}"
+                                     GroupName="NavGroup"
+                                     IsChecked="True"
+                                     Command="{Binding GoToDashboardCommand}"
+                                     Visibility="{Binding CanAccessDashboard, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ViewDashboard" Width="22" Height="22"
+                                                         Foreground="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=Foreground}"/>
+                                <TextBlock Text="{Binding [Sidebar_Dashboard], Source={x:Static services:LanguageService.Instance}}"
+                                           Margin="14 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource SidebarNavItemStyle}"
+                                     GroupName="NavGroup"
+                                     Command="{Binding GoToProductsCommand}"
+                                     Visibility="{Binding CanAccessProducts, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="PackageVariantClosed" Width="22" Height="22"
+                                                         Foreground="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=Foreground}"/>
+                                <TextBlock Text="{Binding [Sidebar_Products], Source={x:Static services:LanguageService.Instance}}"
+                                           Margin="14 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource SidebarNavItemStyle}"
+                                     GroupName="NavGroup"
+                                     Command="{Binding GoToSalesCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Cart" Width="22" Height="22"
+                                                         Foreground="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=Foreground}"/>
+                                <TextBlock Text="{Binding [Sidebar_POS], Source={x:Static services:LanguageService.Instance}}"
+                                           Margin="14 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource SidebarNavItemStyle}"
+                                     GroupName="NavGroup"
+                                     Command="{Binding GoToRepairsCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Tools" Width="22" Height="22"
+                                                         Foreground="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=Foreground}"/>
+                                <TextBlock Text="{Binding [Sidebar_Repairs], Source={x:Static services:LanguageService.Instance}}"
+                                           Margin="14 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource SidebarNavItemStyle}"
+                                     GroupName="NavGroup"
+                                     Command="{Binding GoToExpensesCommand}"
+                                     Visibility="{Binding CanAccessExpenses, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Cash" Width="22" Height="22"
+                                                         Foreground="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=Foreground}"/>
+                                <TextBlock Text="{Binding [Sidebar_Expenses], Source={x:Static services:LanguageService.Instance}}"
+                                           Margin="14 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource SidebarNavItemStyle}"
+                                     GroupName="NavGroup"
+                                     Command="{Binding GoToReportsCommand}"
+                                     Visibility="{Binding CanAccessReports, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ChartBar" Width="22" Height="22"
+                                                         Foreground="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=Foreground}"/>
+                                <TextBlock Text="{Binding [Sidebar_Reports], Source={x:Static services:LanguageService.Instance}}"
+                                           Margin="14 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource SidebarNavItemStyle}"
+                                     GroupName="NavGroup"
+                                     Command="{Binding GoToBackupCommand}"
+                                     Visibility="{Binding CanAccessSettings, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Database" Width="22" Height="22"
+                                                         Foreground="{Binding RelativeSource={RelativeSource AncestorType=RadioButton}, Path=Foreground}"/>
+                                <TextBlock Text="{Binding [Sidebar_Backup], Source={x:Static services:LanguageService.Instance}}"
+                                           Margin="14 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Sidebar Footer -->
+                <Border Grid.Row="3" BorderBrush="#1F2937" BorderThickness="0 1 0 0" Padding="20 12">
+                    <StackPanel>
+                        <!-- User Info -->
+                        <StackPanel Visibility="{Binding CurrentUser.IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0 0 0 8">
+                            <TextBlock Text="{Binding CurrentUser.FullName}"
+                                       FontSize="13" FontWeight="SemiBold" Foreground="#D1D5DB"/>
+                            <TextBlock Text="{Binding CurrentUser.RoleName}"
+                                       FontSize="11" Foreground="#6B7280"/>
+                        </StackPanel>
+
+                        <!-- Logout Button -->
+                        <Border Background="#374151" CornerRadius="8" Height="32" Margin="0 0 0 8">
+                            <Button FontSize="12"
+                                    Foreground="#EF4444" Background="Transparent" BorderThickness="0"
+                                    Cursor="Hand"
+                                    Command="{Binding LogoutCommand}">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <materialDesign:PackIcon Kind="Logout" Width="14" Height="14"
+                                                             Foreground="#EF4444" Margin="0 0 6 0"/>
+                                    <TextBlock Text="{Binding [Sidebar_Logout], Source={x:Static services:LanguageService.Instance}}"/>
+                                </StackPanel>
+                            </Button>
+                        </Border>
+
+                        <TextBlock Text="{Binding [Sidebar_Version], Source={x:Static services:LanguageService.Instance}}"
+                                   FontSize="11" Foreground="#4B5563"/>
+                        <TextBlock FontSize="11" Foreground="#10B981"
+                                   Text="{Binding [Sidebar_StatusDetail], Source={x:Static services:LanguageService.Instance}, StringFormat=● {0}}"/>
+                        <Border Margin="0 8 0 0" Background="#1F2937" CornerRadius="8" Padding="8">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Width="80" Height="28" FontSize="11"
+                                        Background="#3B82F6" Foreground="White" BorderThickness="0"
+                                        Cursor="Hand"
+                                        Command="{Binding Source={x:Static services:LanguageService.Instance}, Path=SwitchToArabicCommand}"
+                                        Visibility="{Binding IsRtl, Source={x:Static services:LanguageService.Instance}, Converter={StaticResource InverseBoolConverter}}"
+                                        Content="العربية" Margin="0 0 4 0"/>
+                                <Button Width="80" Height="28" FontSize="11"
+                                        Background="#3B82F6" Foreground="White" BorderThickness="0"
+                                        Cursor="Hand"
+                                        Command="{Binding Source={x:Static services:LanguageService.Instance}, Path=SwitchToEnglishCommand}"
+                                        Visibility="{Binding IsRtl, Source={x:Static services:LanguageService.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                        Content="English"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top Bar -->
+            <Border Grid.Row="0" Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="0 0 0 1"
+                    Height="60" Padding="24 0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding [TopBar_Title], Source={x:Static services:LanguageService.Instance}}"
+                               FontSize="20" FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="#EFF6FF" CornerRadius="20"
+                                Padding="10 6" Margin="0 0 16 0">
+                            <TextBlock Text="{Binding [TopBar_Badge], Source={x:Static services:LanguageService.Instance}}"
+                                       FontSize="12"
+                                       Foreground="{StaticResource PrimaryBrush}"
+                                       FontWeight="SemiBold"/>
+                        </Border>
+                        <Border Width="36" Height="36" CornerRadius="18"
+                                Background="{StaticResource PrimaryBrush}">
+                            <TextBlock Text="KF" FontSize="16" FontWeight="Bold"
+                                       Foreground="{StaticResource TextOnPrimaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Page Content with fade transition -->
+            <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}" x:Name="PageContent">
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+                        <pages:DashboardPage/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ProductsViewModel}">
+                        <pages:ProductsPage/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:SalesViewModel}">
+                        <pages:SalesPage/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:RepairsViewModel}">
+                        <pages:RepairsPage/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ExpensesViewModel}">
+                        <pages:ExpensesPage/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ReportsViewModel}">
+                        <pages:ReportsPage/>
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
+
+            <!-- Toast Notifications Overlay -->
+            <Border Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right"
+                    Margin="0 16 16 0" Panel.ZIndex="1000" IsHitTestVisible="True"
+                    Width="380" Focusable="False">
+                <controls:NotificationControl DataContext="{Binding NotificationService}"/>
+            </Border>
+
+            <!-- Confirmation Dialog Overlay -->
+            <controls:ConfirmationControl Grid.Row="1" DataContext="{Binding ConfirmationService}"
+                                           Panel.ZIndex="1001" Focusable="False"/>
+        </Grid>
+    </Grid>
+</Window>

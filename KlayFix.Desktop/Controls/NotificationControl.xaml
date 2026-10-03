@@ -1,0 +1,47 @@
+<UserControl x:Class="KlayFix.Desktop.Controls.NotificationControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:services="clr-namespace:KlayFix.Desktop.Services"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="380">
+    <ItemsControl ItemsSource="{Binding Notifications}" x:Name="NotificationList"
+                  Focusable="False">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate DataType="{x:Type services:NotificationItem}">
+                <Border x:Name="ToastRoot" CornerRadius="12" Padding="16 12" Margin="0 0 0 10"
+                        Effect="{StaticResource CardShadowEffect}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="36" Height="36" CornerRadius="10"
+                                Background="#33FFFFFF">
+                            <materialDesign:PackIcon Kind="{Binding IconKind}" Width="20" Height="20"
+                                                     Foreground="White"
+                                                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{Binding Message}" FontSize="14" FontWeight="Medium"
+                                   Foreground="White" TextWrapping="Wrap" VerticalAlignment="Center"
+                                   Margin="12 0 12 0"/>
+                        <Button Grid.Column="2" Width="24" Height="24" Padding="0"
+                                Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                Command="{Binding DataContext.DismissCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                CommandParameter="{Binding Id}">
+                            <materialDesign:PackIcon Kind="Close" Width="16" Height="16" Foreground="#CCFFFFFF"/>
+                        </Button>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>

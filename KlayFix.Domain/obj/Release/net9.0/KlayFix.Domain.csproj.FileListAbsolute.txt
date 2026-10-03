@@ -1,0 +1,14 @@
+D:\KlayFix\KlayFix.Domain\bin\Release\net9.0\KlayFix.Domain.deps.json
+D:\KlayFix\KlayFix.Domain\bin\Release\net9.0\KlayFix.Domain.runtimeconfig.json
+D:\KlayFix\KlayFix.Domain\bin\Release\net9.0\KlayFix.Domain.dll
+D:\KlayFix\KlayFix.Domain\bin\Release\net9.0\KlayFix.Domain.pdb
+D:\KlayFix\KlayFix.Domain\obj\Release\net9.0\KlayFix.Domain.csproj.AssemblyReference.cache
+D:\KlayFix\KlayFix.Domain\obj\Release\net9.0\KlayFix.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\KlayFix\KlayFix.Domain\obj\Release\net9.0\KlayFix.Domain.AssemblyInfoInputs.cache
+D:\KlayFix\KlayFix.Domain\obj\Release\net9.0\KlayFix.Domain.AssemblyInfo.cs
+D:\KlayFix\KlayFix.Domain\obj\Release\net9.0\KlayFix.Domain.csproj.CoreCompileInputs.cache
+D:\KlayFix\KlayFix.Domain\obj\Release\net9.0\KlayFix.Domain.dll
+D:\KlayFix\KlayFix.Domain\obj\Release\net9.0\refint\KlayFix.Domain.dll
+D:\KlayFix\KlayFix.Domain\obj\Release\net9.0\KlayFix.Domain.pdb
+D:\KlayFix\KlayFix.Domain\obj\Release\net9.0\KlayFix.Domain.genruntimeconfig.cache
+D:\KlayFix\KlayFix.Domain\obj\Release\net9.0\ref\KlayFix.Domain.dll

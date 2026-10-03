@@ -1,0 +1,225 @@
+﻿using System.IO;
+using System.Windows;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using KlayFix.Desktop.Services;
+using KlayFix.Desktop.ViewModels;
+using KlayFix.Desktop.Views;
+using KlayFix.Desktop.Views.Windows;
+using KlayFix.Infrastructure;
+using KlayFix.Infrastructure.Data;
+using KlayFix.Application.Interfaces;
+using KlayFix.Application.Helpers;
+
+namespace KlayFix.Desktop;
+
+public partial class App : System.Windows.Application
+{
+    private static readonly string AppDataDir = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "KlayFix");
+
+    public static ServiceProvider ServiceProvider { get; private set; } = null!;
+    public static AppLogger Logger { get; private set; } = null!;
+    public static IConfiguration Configuration { get; private set; } = null!;
+    public static string ConnectionString { get; private set; } = string.Empty;
+    public static string BackupDirectory { get; private set; } = string.Empty;
+
+    public App()
+    {
+        ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        Directory.CreateDirectory(AppDataDir);
+
+        DispatcherUnhandledException += (_, e) =>
+        {
+            Logger?.Fatal(e.Exception, "DispatcherUnhandledException");
+            ShowFatalError("An unexpected error occurred. The application will close.", e.Exception);
+            e.Handled = true;
+            Current.Shutdown(-1);
+        };
+
+        AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+        {
+            Logger?.Fatal(e.ExceptionObject as Exception ?? new Exception("Unknown error"), "AppDomainUnhandledException");
+        };
+
+        TaskScheduler.UnobservedTaskException += (_, e) =>
+        {
+            Logger?.Error(e.Exception, "UnobservedTaskException");
+            e.SetObserved();
+        };
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        try
+        {
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            Logger = new AppLogger("KlayFix");
+            Logger.LogStartup();
+
+            ConnectionString = Configuration.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            var backupDir = Configuration["AppSettings:BackupDirectory"];
+            BackupDirectory = string.IsNullOrWhiteSpace(backupDir)
+                ? Path.Combine(AppDataDir, "Backups")
+                : backupDir;
+            Directory.CreateDirectory(BackupDirectory);
+
+            Logger.Info("Configuration loaded. Backup directory: {Dir}", BackupDirectory);
+
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            ServiceProvider = services.BuildServiceProvider();
+
+            InitializeDatabase();
+            SeedUsers();
+
+            Logger.Info("Startup complete. Entering login loop.");
+            ShowLoginLoop();
+        }
+        catch (Exception ex)
+        {
+            Logger?.Fatal(ex, "Application startup failed");
+            ShowFatalError($"Application failed to start.\n\n{ex.Message}", ex);
+            Current.Shutdown(-1);
+        }
+    }
+
+    private static void ShowLoginLoop()
+    {
+        try
+        {
+            while (true)
+            {
+                Logger.Debug("Showing login window...");
+                var loginWindow = ServiceProvider.GetRequiredService<LoginWindow>();
+                var loginResult = loginWindow.ShowDialog();
+                Logger.Debug("Login dialog result: {Result}", loginResult);
+
+                if (loginResult != true)
+                {
+                    Logger.Info("Login cancelled. Shutting down.");
+                    break;
+                }
+
+                Logger.Debug("Showing main window...");
+                var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+                mainWindow.ShowDialog();
+                Logger.Debug("Main window closed.");
+
+                var currentUser = ServiceProvider.GetRequiredService<CurrentUserService>();
+                Logger.Debug("IsLoggedIn: {IsLoggedIn}", currentUser.IsLoggedIn);
+
+                if (!currentUser.IsLoggedIn)
+                {
+                    Logger.Info("User logged out. Returning to login.");
+                    continue;
+                }
+
+                Logger.Info("User remains logged in. Shutting down.");
+                break;
+            }
+
+            Logger.Info("Application shutting down normally.");
+            Logger.Dispose();
+            Current.Shutdown();
+        }
+        catch (Exception ex)
+        {
+            Logger?.Fatal(ex, "Login loop error");
+            try { MessageBox.Show($"Login loop error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); } catch { }
+            Logger?.Dispose();
+            Current.Shutdown(-1);
+        }
+    }
+
+    private static void InitializeDatabase()
+    {
+        using var scope = ServiceProvider.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        Logger.Info("Testing database connection...");
+
+        var canConnect = db.Database.CanConnect();
+        Logger.Info("CanConnect: {Result}", canConnect);
+
+        if (!canConnect)
+        {
+            Logger.Error("Cannot connect to database. Connection string: {ConnString}",
+                ConnectionString.Replace("Password=", "Password=***").Replace("pwd=", "pwd=***"));
+            throw new InvalidOperationException(
+                "Cannot connect to the database. Please verify SQL Server is running and the connection string is correct.");
+        }
+
+        Logger.Info("Database connection OK. Running EnsureCreated...");
+        db.Database.EnsureCreated();
+        Logger.Info("EnsureCreated completed.");
+    }
+
+    private static void SeedUsers()
+    {
+        using var scope = ServiceProvider.CreateScope();
+        var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
+
+        var seedOptions = new SeedUsersOptions
+        {
+            AdminUsername = Configuration["AppSettings:DefaultAdminUsername"] ?? "admin",
+            AdminPassword = Configuration["AppSettings:DefaultAdminPassword"] ?? "Admin@123",
+            SalesUsername = Configuration["AppSettings:DefaultSalesUsername"] ?? "sales",
+            SalesPassword = Configuration["AppSettings:DefaultSalesPassword"] ?? "Sales@123"
+        };
+
+        Logger.Info("Checking default users...");
+        authService.SeedDefaultUsersAsync(seedOptions).GetAwaiter().GetResult();
+        Logger.Info("Default users seeded successfully.");
+    }
+
+    private static void ShowFatalError(string message, Exception? ex = null)
+    {
+        try
+        {
+            var detail = ex != null
+                ? $"\n\nTechnical details:\n{ex.GetType().Name}: {ex.Message}"
+                : string.Empty;
+
+            MessageBox.Show(
+                $"{message}{detail}\n\nLogs: {Path.Combine(AppDataDir, "Logs")}",
+                "KlayFix - Fatal Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+        catch { }
+    }
+
+    internal static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddInfrastructure(ConnectionString);
+
+        services.AddSingleton<CurrentUserService>();
+        services.AddSingleton<AuditService>();
+        services.AddSingleton<NotificationService>();
+        services.AddSingleton<ConfirmationService>();
+        services.AddSingleton(s => new DatabaseBackupService(ConnectionString));
+
+        services.AddTransient<LoginViewModel>();
+        services.AddTransient<DashboardViewModel>();
+        services.AddTransient<ProductsViewModel>();
+        services.AddTransient<SalesViewModel>();
+        services.AddTransient<RepairsViewModel>();
+        services.AddTransient<ExpensesViewModel>();
+        services.AddTransient<ReportsViewModel>();
+        services.AddTransient<MainViewModel>();
+        services.AddTransient<BackupViewModel>();
+
+        services.AddTransient<LoginWindow>();
+        services.AddTransient<MainWindow>();
+        services.AddTransient<Views.Pages.BackupPage>();
+    }
+}

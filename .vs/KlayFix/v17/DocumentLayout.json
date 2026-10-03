@@ -1,0 +1,165 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\KlayFix\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|d:\\klayfix\\klayfix.desktop\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|solutionrelative:klayfix.desktop\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|d:\\klayfix\\klayfix.desktop\\views\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|solutionrelative:klayfix.desktop\\views\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|d:\\klayfix\\klayfix.desktop\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|solutionrelative:klayfix.desktop\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|d:\\klayfix\\klayfix.desktop\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|solutionrelative:klayfix.desktop\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|d:\\klayfix\\klayfix.desktop\\views\\windows\\setupwindow.xaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|solutionrelative:klayfix.desktop\\views\\windows\\setupwindow.xaml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|d:\\klayfix\\klayfix.desktop\\views\\pages\\backuppage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|solutionrelative:klayfix.desktop\\views\\pages\\backuppage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|d:\\klayfix\\klayfix.desktop\\views\\windows\\setupwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|solutionrelative:klayfix.desktop\\views\\windows\\setupwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|d:\\klayfix\\klayfix.desktop\\services\\applogger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD0307C-5E3A-408A-B034-1925007FB6F7}|KlayFix.Desktop\\KlayFix.Desktop.csproj|solutionrelative:klayfix.desktop\\services\\applogger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 251,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AppLogger.cs",
+              "DocumentMoniker": "D:\\KlayFix\\KlayFix.Desktop\\Services\\AppLogger.cs",
+              "RelativeDocumentMoniker": "KlayFix.Desktop\\Services\\AppLogger.cs",
+              "ToolTip": "D:\\KlayFix\\KlayFix.Desktop\\Services\\AppLogger.cs",
+              "RelativeToolTip": "KlayFix.Desktop\\Services\\AppLogger.cs",
+              "ViewState": "AgIAAFAAAAAAAAAAAABRwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T15:49:39.591Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SetupWindow.xaml.cs",
+              "DocumentMoniker": "D:\\KlayFix\\KlayFix.Desktop\\Views\\Windows\\SetupWindow.xaml.cs",
+              "RelativeDocumentMoniker": "KlayFix.Desktop\\Views\\Windows\\SetupWindow.xaml.cs",
+              "ToolTip": "D:\\KlayFix\\KlayFix.Desktop\\Views\\Windows\\SetupWindow.xaml.cs",
+              "RelativeToolTip": "KlayFix.Desktop\\Views\\Windows\\SetupWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T15:40:33.117Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SetupWindow.xaml",
+              "DocumentMoniker": "D:\\KlayFix\\KlayFix.Desktop\\Views\\Windows\\SetupWindow.xaml",
+              "RelativeDocumentMoniker": "KlayFix.Desktop\\Views\\Windows\\SetupWindow.xaml",
+              "ToolTip": "D:\\KlayFix\\KlayFix.Desktop\\Views\\Windows\\SetupWindow.xaml",
+              "RelativeToolTip": "KlayFix.Desktop\\Views\\Windows\\SetupWindow.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-07-22T15:40:20.436Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "BackupPage.xaml.cs",
+              "DocumentMoniker": "D:\\KlayFix\\KlayFix.Desktop\\Views\\Pages\\BackupPage.xaml.cs",
+              "RelativeDocumentMoniker": "KlayFix.Desktop\\Views\\Pages\\BackupPage.xaml.cs",
+              "ToolTip": "D:\\KlayFix\\KlayFix.Desktop\\Views\\Pages\\BackupPage.xaml.cs",
+              "RelativeToolTip": "KlayFix.Desktop\\Views\\Pages\\BackupPage.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-22T15:26:58.547Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "D:\\KlayFix\\KlayFix.Desktop\\Views\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "KlayFix.Desktop\\Views\\MainWindow.xaml",
+              "ToolTip": "D:\\KlayFix\\KlayFix.Desktop\\Views\\MainWindow.xaml",
+              "RelativeToolTip": "KlayFix.Desktop\\Views\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-07-22T15:24:20.406Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "App.xaml",
+              "DocumentMoniker": "D:\\KlayFix\\KlayFix.Desktop\\App.xaml",
+              "RelativeDocumentMoniker": "KlayFix.Desktop\\App.xaml",
+              "ToolTip": "D:\\KlayFix\\KlayFix.Desktop\\App.xaml",
+              "RelativeToolTip": "KlayFix.Desktop\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-07-22T15:24:15.236Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\KlayFix\\KlayFix.Desktop\\appsettings.json",
+              "RelativeDocumentMoniker": "KlayFix.Desktop\\appsettings.json",
+              "ToolTip": "D:\\KlayFix\\KlayFix.Desktop\\appsettings.json",
+              "RelativeToolTip": "KlayFix.Desktop\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-07-22T15:09:25.119Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "D:\\KlayFix\\KlayFix.Desktop\\App.xaml.cs",
+              "RelativeDocumentMoniker": "KlayFix.Desktop\\App.xaml.cs",
+              "ToolTip": "D:\\KlayFix\\KlayFix.Desktop\\App.xaml.cs",
+              "RelativeToolTip": "KlayFix.Desktop\\App.xaml.cs",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAYwI0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-25T15:08:16.473Z"
+            }
+          ]
+        },
+        {
+          "DockedHeight": 149,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

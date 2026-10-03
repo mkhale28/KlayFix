@@ -1,0 +1,13 @@
+﻿using KlayFix.Desktop.ViewModels;
+using System.Windows.Controls;
+
+namespace KlayFix.Desktop.Views.Pages;
+
+public partial class BackupPage : UserControl
+{
+    public BackupPage(BackupViewModel viewModel)
+    {
+        InitializeComponent();
+        DataContext = viewModel;
+    }
+}

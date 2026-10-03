@@ -1,0 +1,20 @@
+﻿using KlayFix.Desktop.ViewModels;
+using System.Windows.Controls;
+
+namespace KlayFix.Desktop.Views.Pages
+{
+    public partial class BackupPage : UserControl
+    {
+        // Parameterless constructor required for XAML instantiation
+        public BackupPage()
+        {
+            InitializeComponent();
+        }
+
+        // DI-friendly constructor - chain to parameterless and set DataContext
+        public BackupPage(BackupViewModel viewModel) : this()
+        {
+            DataContext = viewModel;
+        }
+    }
+}

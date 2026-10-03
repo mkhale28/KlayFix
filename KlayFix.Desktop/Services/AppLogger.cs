@@ -1,0 +1,83 @@
+using System.IO;
+using Serilog;
+using Serilog.Events;
+
+namespace KlayFix.Desktop.Services;
+
+public class AppLogger : IDisposable
+{
+    private readonly ILogger _logger;
+    private readonly string _logDir;
+    private bool _disposed;
+
+    public AppLogger(string applicationName = "KlayFix")
+    {
+        _logDir = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            applicationName, "Logs");
+        Directory.CreateDirectory(_logDir);
+
+        _logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            .MinimumLevel.Override("System", LogEventLevel.Warning)
+            .WriteTo.Async(a => a.File(
+                path: Path.Combine(_logDir, "klayfix-.log"),
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 30,
+                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                fileSizeLimitBytes: 10_485_760))
+            .WriteTo.File(
+                path: Path.Combine(_logDir, "errors-.log"),
+                restrictedToMinimumLevel: LogEventLevel.Error,
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 90,
+                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+            .CreateLogger();
+
+        _logger.Information("Logger initialized. Log directory: {LogDir}", _logDir);
+    }
+
+    // Convenience overloads without params to avoid overload resolution issues at call sites
+    public void Debug(string message) => Debug(message, Array.Empty<object?>());
+    public void Info(string message) => Info(message, Array.Empty<object?>());
+    public void Warn(string message) => Warn(message, Array.Empty<object?>());
+    public void Error(string message) => Error(message, Array.Empty<object?>());
+    public void Error(Exception ex, string message) => Error(ex, message, Array.Empty<object?>());
+    public void Fatal(Exception ex, string message) => Fatal(ex, message, Array.Empty<object?>());
+
+    // Existing methods with params
+    public void Debug(string message, params object?[] args) => _logger.Debug(message, args);
+    public void Info(string message, params object?[] args) => _logger.Information(message, args);
+    public void Warn(string message, params object?[] args) => _logger.Warning(message, args);
+    public void Error(string message, params object?[] args) => _logger.Error(message, args);
+    public void Error(Exception ex, string message, params object?[] args) => _logger.Error(ex, message, args);
+    public void Fatal(Exception ex, string message, params object?[] args) => _logger.Fatal(ex, message, args);
+
+    public void LogStartup() => _logger.Information("=== APPLICATION STARTUP ===");
+    public void LogShutdown() => _logger.Information("=== APPLICATION SHUTDOWN ===");
+    public void LogLogin(string username, bool success) =>
+        _logger.Information("LOGIN {Result} | User: {Username}", success ? "SUCCESS" : "FAILURE", username);
+    public void LogLogout(string username) =>
+        _logger.Information("LOGOUT | User: {Username}", username);
+    public void LogSale(string invoiceNumber, decimal amount, string username) =>
+        _logger.Information("SALE | Invoice: {Invoice} | Amount: {Amount:C} | User: {Username}", invoiceNumber, amount, username);
+    public void LogRepairAction(string action, int repairId, string username) =>
+        _logger.Information("REPAIR | Action: {Action} | RepairId: {Id} | User: {Username}", action, repairId, username);
+    public void LogDatabaseOperation(string operation, string detail) =>
+        _logger.Information("DATABASE | {Operation} | {Detail}", operation, detail);
+    public void LogUnauthorizedAccess(string username, string attemptedAction) =>
+        _logger.Warning("SECURITY | Unauthorized access by {Username} to {Action}", username, attemptedAction);
+
+    public string GetLogDirectory() => _logDir;
+
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            _disposed = true;
+            LogShutdown();
+            (_logger as IDisposable)?.Dispose();
+        }
+    }
+}

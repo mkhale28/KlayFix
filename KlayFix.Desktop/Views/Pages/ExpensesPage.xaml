@@ -1,0 +1,152 @@
+﻿<UserControl x:Class="KlayFix.Desktop.Views.Pages.ExpensesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+       xmlns:services="clr-namespace:KlayFix.Desktop.Services"
+      mc:Ignorable="d"
+      d:DesignHeight="800" d:DesignWidth="1000"
+      Background="{StaticResource BackgroundBrush}">
+    <Grid>
+        <ScrollViewer Padding="28" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Grid Margin="0 0 0 8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding [Expenses_Title], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource PageHeaderStyle}" VerticalAlignment="Center"/>
+                    <Button Grid.Column="2" Content="{Binding [Expenses_AddButton], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource ModernButtonStyle}"
+                            Command="{Binding OpenAddModalCommand}" Width="160"/>
+                </Grid>
+
+                <TextBlock Text="{Binding [Expenses_PageDescription], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource HeaderDescriptionStyle}"/>
+
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="{StaticResource DangerBrush}" Margin="0 0 0 8"/>
+
+                <Border Background="{StaticResource SurfaceBrush}" CornerRadius="12" Padding="16" Margin="0 0 16 0"
+                        Effect="{StaticResource CardShadowEffect}">
+                    <Grid Height="40">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding [Expenses_From], Source={x:Static services:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center" Margin="0 0 12 0"/>
+                        <DatePicker Grid.Column="1" SelectedDate="{Binding FilterFrom}"
+                                    Height="36" FontSize="13"/>
+                        <TextBlock Grid.Column="2" Text="{Binding [Expenses_To], Source={x:Static services:LanguageService.Instance}}" FontSize="14" VerticalAlignment="Center" Margin="12 0 12 0"/>
+                        <DatePicker Grid.Column="3" SelectedDate="{Binding FilterTo}"
+                                    Height="36" FontSize="13"/>
+                        <Button Grid.Column="4" Content="{Binding [Expenses_Filter], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource ModernButtonStyle}"
+                                Command="{Binding FilterCommand}" Width="100" Margin="12 0 0 0"/>
+                    </Grid>
+                </Border>
+
+                <ProgressBar IsIndeterminate="True" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0 0 8 0"/>
+
+                <Border Background="{StaticResource SurfaceBrush}" CornerRadius="12"
+                        Effect="{StaticResource CardShadowEffect}" Padding="0">
+                    <Grid>
+                        <DataGrid ItemsSource="{Binding Expenses}" Style="{StaticResource ModernDataGridStyle}" MaxHeight="500"
+                                  Visibility="{Binding Expenses.Count, Converter={StaticResource CountToVisibilityConverter}}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{Binding [Expenses_Date], Source={x:Static services:LanguageService.Instance}}" Binding="{Binding Date, StringFormat={}{0:MMM dd, yyyy}}" Width="130"/>
+                                <DataGridTextColumn Header="{Binding [Expenses_Description], Source={x:Static services:LanguageService.Instance}}" Binding="{Binding Description}" Width="*"/>
+                                <DataGridTextColumn Header="{Binding [Expenses_Category], Source={x:Static services:LanguageService.Instance}}" Binding="{Binding Category}" Width="120"/>
+                                <DataGridTextColumn Header="{Binding [Expenses_Amount], Source={x:Static services:LanguageService.Instance}}" Binding="{Binding Amount, StringFormat=₱{0:N2}}" Width="130">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                            <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTemplateColumn Header="{Binding [Expenses_Actions], Source={x:Static services:LanguageService.Instance}}" Width="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Width="32" Height="32" Margin="2" HorizontalAlignment="Center"
+                                                    Background="#FEF2F2" BorderThickness="0" Cursor="Hand"
+                                                    Command="{Binding DataContext.DeleteExpenseCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding Id}">
+                                                <materialDesign:PackIcon Kind="Delete" Width="16" Height="16"
+                                                                         Foreground="{StaticResource DangerBrush}"/>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel Visibility="{Binding Expenses.Count, Converter={StaticResource InverseCountToVisibilityConverter}}">
+                            <materialDesign:PackIcon Kind="CashRemove" Style="{StaticResource EmptyStateIconStyle}" Margin="0 48 0 8"/>
+                            <TextBlock Text="{Binding [Expenses_Empty], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource EmptyStateTextStyle}" Margin="0"/>
+                            <TextBlock Text="{Binding [Expenses_EmptyHint], Source={x:Static services:LanguageService.Instance}}"
+                                       Style="{StaticResource EmptyStateTextStyle}" FontSize="13" Margin="0 4 0 48"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Style="{StaticResource ModalOverlayStyle}"
+                Visibility="{Binding IsModalOpen, Converter={StaticResource BoolToVisibilityConverter}}"
+                Panel.ZIndex="100">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border Style="{StaticResource ModalContentStyle}" Width="500" Padding="36">
+                    <StackPanel>
+                        <TextBlock Text="{Binding [Expenses_ModalTitle], Source={x:Static services:LanguageService.Instance}}" FontSize="24" FontWeight="Bold" Margin="0 0 0 24"/>
+
+                        <TextBlock Text="{Binding ErrorMessage}" Foreground="{StaticResource DangerBrush}"
+                                   Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibilityConverter}}"
+                                   Margin="0 0 0 12"/>
+
+                        <TextBlock Text="{Binding [Expenses_FieldDescription], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource FieldLabelStyle}"/>
+                        <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 16" Height="44"
+                                 materialDesign:HintAssist.Hint="{Binding [Expenses_FieldDescriptionHint], Source={x:Static services:LanguageService.Instance}}"/>
+
+                        <Grid Margin="0 0 0 16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0 0 6 0">
+                                <TextBlock Text="{Binding [Expenses_FieldAmount], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource FieldLabelStyle}"/>
+                                <TextBox Text="{Binding Amount, UpdateSourceTrigger=LostFocus}" Height="44"
+                                         materialDesign:HintAssist.Hint="{Binding [Expenses_FieldAmountHint], Source={x:Static services:LanguageService.Instance}}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="6 0 0 0">
+                                <TextBlock Text="{Binding [Expenses_FieldCategory], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource FieldLabelStyle}"/>
+                                <ComboBox ItemsSource="{Binding Categories}"
+                                          SelectedItem="{Binding Category}" Height="44"
+                                          materialDesign:HintAssist.Hint="{Binding [Expenses_FieldCategoryHint], Source={x:Static services:LanguageService.Instance}}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel Margin="0 0 0 24">
+                            <TextBlock Text="{Binding [Expenses_FieldDate], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource FieldLabelStyle}"/>
+                            <DatePicker SelectedDate="{Binding Date}" Width="200" Height="36" HorizontalAlignment="Left" FontSize="13"/>
+                        </StackPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="1" Content="{Binding [Expenses_Cancel], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource OutlineButtonStyle}"
+                                    Command="{Binding CloseModalCommand}" Width="120" Margin="0 0 12 0"/>
+                            <Button Grid.Column="2" Content="{Binding [Expenses_Save], Source={x:Static services:LanguageService.Instance}}" Style="{StaticResource ModernButtonStyle}"
+                                    Command="{Binding SaveExpenseCommand}" Width="120"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
